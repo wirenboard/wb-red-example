@@ -1,0 +1,15 @@
+# Мост mosquitto: отправляет значения этого узла на брокер соседа в /replica/remote/...
+# Файл для второго узла. Мост только отправляет (out): забирать значения у соседа
+# не нужно, это делает мост соседа, иначе каждое значение придёт дважды.
+#
+# IP-адрес соседа в address замените на свой. В строке topic укажите свои значения.
+connection wb-ha-replica
+address 192.168.143.111:1883
+# Что реплицируется, определяют только строки topic: одна строка на путь вида
+# devices/<устройство>/controls/+ (все значения устройства). Строка ниже пропускает
+# тестовую уставку из wb-rules/wb_ha_test_setpoint.js. Такие же строки добавьте на первом узле.
+topic devices/wb_ha_test/controls/+ out 1 / /replica/remote/
+cleansession true
+notifications false
+start_type automatic
+restart_timeout 5
